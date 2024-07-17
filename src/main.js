@@ -8,9 +8,17 @@ const BASE_URL = 'https://pixabay.com/api/';
 const searchBtn = document.querySelector('.search-btn');
 const searchForm = document.querySelector(`.search-form`);
 const inputField = document.querySelector(`.input-field`);
-const resultsGalleryContainer = document.querySelector(`.gallery-result`);
 const resultsGalleryList = document.querySelector(`.gallery-result-list`);
-const loadText = document.querySelector('.loading-text');
+const queryWord = document.querySelector('.query-word');
+
+const createToggle = selector => ({
+  enable: () => document.querySelector(selector).classList.remove('disabled'),
+  disable: () => document.querySelector(selector).classList.add('disabled'),
+});
+
+const loader = createToggle('.spinner');
+const loadText = createToggle('.loading-text');
+const queryText = createToggle('.query-text');
 
 searchForm.addEventListener('submit', event => {
   event.preventDefault();
@@ -23,7 +31,9 @@ function fetchImages(request) {
     request
   )}&image_type=photo&orientation=horizontal&safesearch=true`;
 
-  Loader.enable();
+  loader.enable();
+  loadText.enable();
+
   fetch(url)
     .then(res => {
       if (!res.ok) {
@@ -32,7 +42,11 @@ function fetchImages(request) {
       return res.json();
     })
     .then(data => {
-      Loader.disable();
+      loader.disable();
+      loadText.disable();
+      queryText.enable();
+      queryWord.textContent = inputField.value;
+
       if (data.hits) {
         displayImages(data.hits);
       } else {
@@ -45,7 +59,8 @@ function fetchImages(request) {
       }
     })
     .catch(error => {
-      Loader.disable();
+      loader.disable();
+      loadText.disable();
       console.error(error);
       iziToast.warning({
         title: 'Error',
@@ -60,15 +75,38 @@ const message =
 function displayImages(images) {
   resultsGalleryList.innerHTML = '';
   if (images.length === 0) {
+    loader.disable();
+    loadText.disable();
+    queryText.disable();
+
     iziToast.warning({
       message: message,
       backgroundColor: '#ef4040',
       messageColor: `#fff`,
+      position: 'topRight',
+      timeout: 2000,
     });
+    setTimeout(clearValue, 2000);
+
     return;
   }
   const imagesMarkup = images.map(makeImgItem).join('');
   resultsGalleryList.insertAdjacentHTML('beforeend', imagesMarkup);
+  setTimeout(clearValue, 500);
+  new SimpleLightbox('.gallery-result-list a', {
+    captions: true,
+    captionsData: 'alt',
+    captionDelay: 250,
+    close: true,
+    className: 'simpleLightboxGallery',
+    doubleTapZoom: 2,
+    scrollZoom: true,
+    overlay: true,
+  });
+}
+
+function clearValue() {
+  inputField.value = '';
 }
 
 function makeImgItem({
@@ -80,38 +118,32 @@ function makeImgItem({
   views,
 }) {
   return `<li class="list-container">
-    <div class="image-container">
-      <img src="${webformatURL}" alt="${tags}" />
+    <div >
+      <div class="image-container">
+        <a href="${webformatURL}" data-source="${webformatURL}">
+          <img src="${webformatURL}" alt="${tags}" />
+        </a>
+      </div>
       <div class="descr-element">
-        <p>"views ${views} dowmloads ${downloads} likes ${likes} comments ${comments}"</p>
+        <ul class="descr-list">
+          <li>
+            <h3>Likes</h3>
+              <p>${likes}</p>
+          </li>
+          <li>
+            <h3>Views</h3>
+              <p>${views}</p>
+          </li>
+          <li>
+            <h3>Comments</h3>
+            <p>${comments}</p>
+          </li>
+          <li>
+            <h3>Downloads</h3>
+              <p>${downloads}</p>
+          </li>
+        </ul>
       </div>
     </div>
   </li>`;
 }
-
-// galleryList.addEventListener('click', onImgClick);
-
-const details = {
-  captions: true,
-  captionsData: 'alt',
-  captionDelay: 250,
-  close: true,
-  className: 'simpleLightboxGallery',
-  doubleTapZoom: 2,
-  scrollZoom: true,
-  overlay: true,
-};
-
-const lightBox = new SimpleLightbox(
-  '.gallery-result-list ul li div img',
-  details
-);
-
-const Loader = {
-  enable: () => document.querySelector('.spinner').classList.remove('disabled'),
-  disable: () => document.querySelector('.spinner').classList.add('disabled'),
-};
-
-const options = {
-  method: 'GET',
-};

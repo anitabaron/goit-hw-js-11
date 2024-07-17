@@ -9,37 +9,44 @@ body {
   line-height: 1.5;
 }
 
-/* img {
-  margin: 10px;
-  max-width: 100%;
-  height: auto;
-  display: inline-block;
-} */
+h3 {
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 1.33333;
+}
+
+p {
+  font-size: 12px;
+  line-height: 2;
+}
 
 .search-form {
   display: flex;
   justify-content: center;
   margin: 0 auto;
   gap: 8px;
+  margin-bottom: 40px;
 }
 
-.search-form input {
+.input-field {
   border: 1px solid #808080;
   border-radius: 4px;
   width: 272px;
   height: 40px;
+  padding: 10px;
 }
 
-.search-form input::placeholder {
+.input-field::placeholder {
   color: #808080;
 }
 
-.search-form input:hover {
+.input-field:hover {
   border: 1px solid #000;
 }
 
-.search-form input:active {
+.input-field:focus-within {
   border: 1px solid #4e75ff;
+  border-color: #4e75ff;
 }
 
 .search-form button {
@@ -81,21 +88,16 @@ body {
   overflow: hidden;
 }
 
-.image-container div {
-  width: 360px;
-  height: 48px;
-  background-color: #fff;
-  position: absolute;
-  text-align: center;
-  padding: 10px 20px;
-  z-index: 999;
+.image-container img {
+  cursor: pointer;
 }
 
-/* .gallery-result div {
+.descr-list {
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-} */
+  text-align: center;
+  gap: 32px;
+  padding: 4px 16px 4px 16px;
+}
 
 @keyframes spin {
   from {
@@ -114,8 +116,26 @@ body {
   border: 2px solid black;
   border-top: 2px solid white;
   animation: spin 0.5s ease-in-out infinite;
+  margin: 0 auto;
 }
 
-.spinner.disabled {
+.loading-text {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.query-word {
+  font-weight: 600;
+}
+
+.query-text {
+  text-align: center;
+  display: block;
+  margin-bottom: 30px;
+}
+
+.disabled {
   display: none;
 }
