@@ -5,7 +5,6 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const API_KEY = '44946151-dc02d84f49eea13b7d5c48659';
 const BASE_URL = 'https://pixabay.com/api/';
-const searchBtn = document.querySelector('.search-btn');
 const searchForm = document.querySelector(`.search-form`);
 const inputField = document.querySelector(`.input-field`);
 const resultsGalleryList = document.querySelector(`.gallery-result-list`);
@@ -93,7 +92,7 @@ function displayImages(images) {
   const imagesMarkup = images.map(makeImgItem).join('');
   resultsGalleryList.insertAdjacentHTML('beforeend', imagesMarkup);
   setTimeout(clearValue, 500);
-  new SimpleLightbox('.gallery-result-list a', {
+  const lightbox = new SimpleLightbox('.gallery-result-list a', {
     captions: true,
     captionsData: 'alt',
     captionDelay: 250,
@@ -103,6 +102,7 @@ function displayImages(images) {
     scrollZoom: true,
     overlay: true,
   });
+  lightbox.refresh();
 }
 
 function clearValue() {
