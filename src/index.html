@@ -12,11 +12,21 @@
       <h1>Homework JS 11</h1>
       <img src="./img/javascript.svg" alt="" />
     </section>
-    <form class="form">
-      <input type="text" placeholder="Search images..." autocomplete="off" />
-      <button type="submit" class="search">Search</button>
+    <form class="search-form">
+      <input
+        type="text"
+        class="input-field"
+        placeholder="Search images..."
+        autocomplete="off"
+        required
+      />
+      <button type="submit" class="search-btn">Search</button>
     </form>
-    <div class="gallery"></div>
+    <div class="spinner disabled"></div>
+    <span class="loading-text is-hidden"
+      >"Loading images, please wait..."
+    </span>
+    <div class="gallery-result"></div>
 
     <script type="module" src="./main.js"></script>
   </body>
