@@ -92,22 +92,24 @@ function displayImages(images) {
   const imagesMarkup = images.map(makeImgItem).join('');
   resultsGalleryList.insertAdjacentHTML('beforeend', imagesMarkup);
   setTimeout(clearValue, 500);
-  const lightbox = new SimpleLightbox('.gallery-result-list a', {
-    captions: true,
-    captionsData: 'alt',
-    captionDelay: 250,
-    close: true,
-    className: 'simpleLightboxGallery',
-    doubleTapZoom: 2,
-    scrollZoom: true,
-    overlay: true,
-  });
+
   lightbox.refresh();
 }
 
 function clearValue() {
   inputField.value = '';
 }
+
+const lightbox = new SimpleLightbox('.gallery-result-list a', {
+  captions: true,
+  captionsData: 'alt',
+  captionDelay: 250,
+  close: true,
+  className: 'simpleLightboxGallery',
+  doubleTapZoom: 2,
+  scrollZoom: true,
+  overlay: true,
+});
 
 function makeImgItem({
   webformatURL,
